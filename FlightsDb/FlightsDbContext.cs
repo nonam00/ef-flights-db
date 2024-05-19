@@ -26,6 +26,8 @@ namespace FlightsDb
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new PassengerConfiguration());
+            builder.ApplyConfiguration(new AirportConfiguration());
             builder.ApplyConfiguration(new TripConfiguration());
             builder.ApplyConfiguration(new TicketConfiguration());
             base.OnModelCreating(builder);

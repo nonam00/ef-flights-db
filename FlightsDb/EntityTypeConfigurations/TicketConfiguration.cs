@@ -11,14 +11,16 @@ namespace FlightsDb.EntityTypeConfigurations
         {
             builder.HasKey(t => t.Id);
 
+            builder.HasAlternateKey(t => t.Number);
+
             builder.HasOne(t => t.Passenger)
-                .WithOne()
-                .HasForeignKey<Ticket>(t => t.PassengerId)
+                .WithMany()
+                .HasForeignKey(t => t.PassengerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.Trip)
-               .WithOne()
-               .HasForeignKey<Ticket>(t => t.TripId)
+               .WithMany()
+               .HasForeignKey(t => t.TripId)
                .OnDelete(DeleteBehavior.NoAction);
         }
     }

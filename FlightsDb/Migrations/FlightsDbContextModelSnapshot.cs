@@ -42,7 +42,7 @@ namespace FlightsDb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Airports");
+                    b.ToTable("Destination", (string)null);
                 });
 
             modelBuilder.Entity("FlightsDb.Models.Passenger", b =>
@@ -54,15 +54,17 @@ namespace FlightsDb.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DocumentNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PassportNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("PassportNumber");
 
                     b.ToTable("Passengers");
                 });
@@ -75,7 +77,7 @@ namespace FlightsDb.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("PassengerId")
                         .HasColumnType("uniqueidentifier");
@@ -88,11 +90,11 @@ namespace FlightsDb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PassengerId")
-                        .IsUnique();
+                    b.HasAlternateKey("Number");
 
-                    b.HasIndex("TripId")
-                        .IsUnique();
+                    b.HasIndex("PassengerId");
+
+                    b.HasIndex("TripId");
 
                     b.ToTable("Tickets");
                 });
@@ -111,7 +113,7 @@ namespace FlightsDb.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SeatsNumber")
                         .HasColumnType("int");
@@ -121,11 +123,11 @@ namespace FlightsDb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArrivalAirportId")
-                        .IsUnique();
+                    b.HasAlternateKey("Number");
 
-                    b.HasIndex("DepartureAirportId")
-                        .IsUnique();
+                    b.HasIndex("ArrivalAirportId");
+
+                    b.HasIndex("DepartureAirportId");
 
                     b.ToTable("Trips");
                 });
@@ -133,14 +135,14 @@ namespace FlightsDb.Migrations
             modelBuilder.Entity("FlightsDb.Models.Ticket", b =>
                 {
                     b.HasOne("FlightsDb.Models.Passenger", "Passenger")
-                        .WithOne()
-                        .HasForeignKey("FlightsDb.Models.Ticket", "PassengerId")
+                        .WithMany()
+                        .HasForeignKey("PassengerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("FlightsDb.Models.Trip", "Trip")
-                        .WithOne()
-                        .HasForeignKey("FlightsDb.Models.Ticket", "TripId")
+                        .WithMany()
+                        .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -152,15 +154,15 @@ namespace FlightsDb.Migrations
             modelBuilder.Entity("FlightsDb.Models.Trip", b =>
                 {
                     b.HasOne("FlightsDb.Models.Airport", "ArrivalAirport")
-                        .WithOne()
-                        .HasForeignKey("FlightsDb.Models.Trip", "ArrivalAirportId")
+                        .WithMany()
+                        .HasForeignKey("ArrivalAirportId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_Trips_ArrivalAirport");
 
                     b.HasOne("FlightsDb.Models.Airport", "DepartureAirport")
-                        .WithOne()
-                        .HasForeignKey("FlightsDb.Models.Trip", "DepartureAirportId")
+                        .WithMany()
+                        .HasForeignKey("DepartureAirportId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_Trips_DepartureAirport");

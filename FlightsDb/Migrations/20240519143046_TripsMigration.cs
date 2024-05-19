@@ -16,7 +16,7 @@ namespace FlightsDb.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SeatsNumber = table.Column<int>(type: "int", nullable: false),
                     ArrivalAirportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -25,29 +25,28 @@ namespace FlightsDb.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trips", x => x.Id);
+                    table.UniqueConstraint("AK_Trips_Number", x => x.Number);
                     table.ForeignKey(
                         name: "FK_Trips_ArrivalAirport",
                         column: x => x.ArrivalAirportId,
-                        principalTable: "Airports",
+                        principalTable: "Destination",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Trips_DepartureAirport",
                         column: x => x.DepartureAirportId,
-                        principalTable: "Airports",
+                        principalTable: "Destination",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trips_ArrivalAirportId",
                 table: "Trips",
-                column: "ArrivalAirportId",
-                unique: true);
+                column: "ArrivalAirportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trips_DepartureAirportId",
                 table: "Trips",
-                column: "DepartureAirportId",
-                unique: true);
+                column: "DepartureAirportId");
         }
 
         /// <inheritdoc />

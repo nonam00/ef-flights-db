@@ -6,23 +6,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FlightsDb.Migrations
 {
     /// <inheritdoc />
-    public partial class PassengersMigration : Migration
+    public partial class AirportsMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Passengers",
+                name: "Destination",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DocumentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Passengers", x => x.Id);
+                    table.PrimaryKey("PK_Destination", x => x.Id);
                 });
         }
 
@@ -30,7 +30,7 @@ namespace FlightsDb.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Passengers");
+                name: "Destination");
         }
     }
 }

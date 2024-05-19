@@ -6,21 +6,21 @@ Passenger passenger1 = new Passenger()
     Id = Guid.NewGuid(),
     Name = "Pavel",
     BirthDate = new DateTime(2000, 1, 20),
-    DocumentNumber = "7020"
+    PassportNumber = "7020"
 };
 Passenger passenger2 = new Passenger()
 {
     Id = Guid.NewGuid(),
     Name = "Pavel",
     BirthDate = new DateTime(199, 2, 20),
-    DocumentNumber = "4021"
+    PassportNumber = "4021"
 };
 Passenger passenger3 = new Passenger()
 {
     Id = Guid.NewGuid(),
     Name = "Anna",
     BirthDate = new DateTime(2000, 3, 10),
-    DocumentNumber = "6002"
+    PassportNumber = "6002"
 };
 
 Airport airport1 = new Airport()
@@ -91,8 +91,8 @@ Ticket ticket2 = new Ticket()
 
 using (FlightsDbContext context = new FlightsDbContext())
 {
-    context.Database.EnsureDeleted();
-    context.Database.EnsureCreated();
+    //context.Database.EnsureDeleted();
+    //context.Database.EnsureCreated();
 
     await context.Passengers.AddRangeAsync(passenger1, passenger2, passenger3);
     await context.SaveChangesAsync();

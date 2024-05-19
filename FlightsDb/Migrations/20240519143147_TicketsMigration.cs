@@ -16,7 +16,7 @@ namespace FlightsDb.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PassengerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TripId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SeatNumber = table.Column<int>(type: "int", nullable: false)
@@ -24,6 +24,7 @@ namespace FlightsDb.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.UniqueConstraint("AK_Tickets_Number", x => x.Number);
                     table.ForeignKey(
                         name: "FK_Tickets_Passengers_PassengerId",
                         column: x => x.PassengerId,
@@ -39,14 +40,12 @@ namespace FlightsDb.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_PassengerId",
                 table: "Tickets",
-                column: "PassengerId",
-                unique: true);
+                column: "PassengerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_TripId",
                 table: "Tickets",
-                column: "TripId",
-                unique: true);
+                column: "TripId");
         }
 
         /// <inheritdoc />

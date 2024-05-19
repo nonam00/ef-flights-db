@@ -10,19 +10,20 @@ namespace FlightsDb.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Trip> builder)
         {
             builder.HasKey(t => t.Id);
+            
+            builder.HasAlternateKey(t => t.Number);
 
             builder.HasOne(t => t.DepartureAirport)
-                .WithOne()
-                .HasForeignKey<Trip>(t => t.DepartureAirportId)
+                .WithMany()
+                .HasForeignKey(t => t.DepartureAirportId)
                 .HasConstraintName("FK_Trips_DepartureAirport")
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.ArrivalAirport)
-               .WithOne()
-               .HasForeignKey<Trip>(t => t.ArrivalAirportId)
+               .WithMany()
+               .HasForeignKey(t => t.ArrivalAirportId)
                .HasConstraintName("FK_Trips_ArrivalAirport")
                .OnDelete(DeleteBehavior.NoAction);
-
         }
     }
 }
