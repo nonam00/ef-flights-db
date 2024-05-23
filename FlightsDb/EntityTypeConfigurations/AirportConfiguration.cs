@@ -10,6 +10,15 @@ namespace FlightsDb.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Airport> builder)
         {
             builder.HasKey(a => a.Id);
+            
+            builder.Property(a => a.Title)
+                   .HasMaxLength(250);
+
+            builder.Property(a => a.Country)
+                   .HasMaxLength(250);
+
+            builder.Property(a => a.City)
+                   .HasMaxLength(250);
 
             builder.ToTable("Destination");
         }

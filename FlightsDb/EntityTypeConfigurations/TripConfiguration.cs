@@ -14,16 +14,16 @@ namespace FlightsDb.EntityTypeConfigurations
             builder.HasAlternateKey(t => t.Number);
 
             builder.HasOne(t => t.DepartureAirport)
-                .WithMany()
-                .HasForeignKey(t => t.DepartureAirportId)
-                .HasConstraintName("FK_Trips_DepartureAirport")
-                .OnDelete(DeleteBehavior.NoAction);
+                   .WithMany()
+                   .HasForeignKey(t => t.DepartureAirportId)
+                   .HasConstraintName("FK_Trips_DepartureAirport")
+                   .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.ArrivalAirport)
-               .WithMany()
-               .HasForeignKey(t => t.ArrivalAirportId)
-               .HasConstraintName("FK_Trips_ArrivalAirport")
-               .OnDelete(DeleteBehavior.NoAction);
+                   .WithMany()
+                   .HasForeignKey(t => t.ArrivalAirportId)
+                   .HasConstraintName("FK_Trips_ArrivalAirport")
+                   .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

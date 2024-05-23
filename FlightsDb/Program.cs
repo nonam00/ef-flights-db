@@ -4,21 +4,24 @@ using FlightsDb.Models;
 Passenger passenger1 = new Passenger()
 {
     Id = Guid.NewGuid(),
-    Name = "Pavel",
+    FirstName = "Pavel",
+    LastName = "Klein",
     BirthDate = new DateTime(2000, 1, 20),
     PassportNumber = "7020"
 };
 Passenger passenger2 = new Passenger()
 {
     Id = Guid.NewGuid(),
-    Name = "Pavel",
-    BirthDate = new DateTime(199, 2, 20),
+    FirstName = "Max",
+    LastName = "Smith",
+    BirthDate = new DateTime(1990, 2, 20),
     PassportNumber = "4021"
 };
 Passenger passenger3 = new Passenger()
 {
     Id = Guid.NewGuid(),
-    Name = "Anna",
+    FirstName = "Anna",
+    LastName = "Lenshina",
     BirthDate = new DateTime(2000, 3, 10),
     PassportNumber = "6002"
 };
