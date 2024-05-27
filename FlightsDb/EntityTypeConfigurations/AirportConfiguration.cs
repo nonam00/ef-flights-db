@@ -20,7 +20,7 @@ namespace FlightsDb.EntityTypeConfigurations
             builder.Property(a => a.City)
                    .HasMaxLength(250);
 
-            builder.ToTable("Destination");
+            builder.ToTable("Destinations");
         }
     }
 }

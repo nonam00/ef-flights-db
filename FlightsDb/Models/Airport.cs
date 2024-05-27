@@ -6,5 +6,8 @@
         public string Title { get; set; } = null!;
         public string Country { get; set; } = null!;
         public string City { get; set; } = null!;
+        
+        public virtual IList<Trip> ArrivalTrips { get; set; }
+        public virtual IList<Trip> DepartureTrips { get; set; }
     }
 }

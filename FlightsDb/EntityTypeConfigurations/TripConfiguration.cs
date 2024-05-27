@@ -14,13 +14,13 @@ namespace FlightsDb.EntityTypeConfigurations
             builder.HasAlternateKey(t => t.Number);
 
             builder.HasOne(t => t.DepartureAirport)
-                   .WithMany()
+                   .WithMany(a => a.DepartureTrips)
                    .HasForeignKey(t => t.DepartureAirportId)
                    .HasConstraintName("FK_Trips_DepartureAirport")
                    .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(t => t.ArrivalAirport)
-                   .WithMany()
+                   .WithMany(a => a.ArrivalTrips)
                    .HasForeignKey(t => t.ArrivalAirportId)
                    .HasConstraintName("FK_Trips_ArrivalAirport")
                    .OnDelete(DeleteBehavior.NoAction);
