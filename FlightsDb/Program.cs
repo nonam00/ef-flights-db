@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 using (FlightsDbContext context = new FlightsDbContext())
 {
-    await Examples.SelectTripsByAirport(context);
-    //await Examples.SelectTicketsByDate(context);
+    //await Examples.TicketsPriceSumByAirport(context);
+    //await Examples.CreateDb(context);
+    // await Examples.SelectCheapAndExpensiveAirports(context);
+    await Examples.SelectCheapAndExpensiveAirportsFromSql(context);
 }

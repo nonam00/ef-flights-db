@@ -15,6 +15,9 @@ namespace FlightsDb.EntityTypeConfigurations
 
             builder.Property(t => t.Type)
                    .HasDefaultValue(TicketType.Economy);    
+            
+            builder.Property(t => t.Price)
+                  .HasColumnType("decimal(8,2)");
 
             builder.HasOne(t => t.Passenger)
                    .WithMany(p => p.Tickets)

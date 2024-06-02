@@ -12,6 +12,6 @@
         public Guid? DepartureAirportId { get; set; }
         public virtual Airport? DepartureAirport { get; set; }
 
-        public IList<Ticket> Tickets { get; set; } = new List<Ticket>();
+        public List<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

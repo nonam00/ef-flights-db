@@ -17,5 +17,6 @@
         public virtual Trip Trip { get; set; } = null!;
         public int SeatNumber { get; set; }
         public TicketType Type { get; set; }
+        public decimal Price { get; set; }
     }
 }

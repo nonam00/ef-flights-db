@@ -95,7 +95,8 @@ namespace FlightsDb
                 Number = "101",
                 TripId = trip1.Id,
                 PassengerId = passenger1.Id,
-                SeatNumber = 20
+                SeatNumber = 20,
+                Price = 15000m
             };
             Ticket ticket2 = new Ticket()
             {
@@ -103,11 +104,27 @@ namespace FlightsDb
                 Number = "802",
                 TripId = trip2.Id,
                 PassengerId = passenger2.Id,
-                SeatNumber = 40
+                SeatNumber = 40,
+                Price = 17000m
+            };
+            Ticket ticket3 = new Ticket()
+            {
+                Id = Guid.NewGuid(),
+                Number = "123",
+                TripId = trip1.Id,
+                PassengerId = passenger3.Id,
+                SeatNumber = 42,
+                Price = 13000m
             };
 
             //context.Database.EnsureDeleted();
             //context.Database.EnsureCreated();
+
+            context.Tickets.ExecuteDelete(); 
+            context.Trips.ExecuteDelete(); 
+            context.Airports.ExecuteDelete();
+            context.Passengers.ExecuteDelete();
+            context.Beneficiaries.ExecuteDelete();
 
             await context.Passengers.AddRangeAsync(passenger1, passenger2, passenger3);
             await context.Beneficiaries.AddAsync(beneficiary);
@@ -116,17 +133,20 @@ namespace FlightsDb
 
             Console.WriteLine("Passengers created");
 
+
             await context.Airports.AddRangeAsync(airport1, airport2, airport3, airport4);
             await context.SaveChangesAsync();
 
             Console.WriteLine("Airports created");
+
 
             await context.Trips.AddRangeAsync(trip1, trip2);
             await context.SaveChangesAsync();
 
             Console.WriteLine("Trips created");
 
-            await context.Tickets.AddRangeAsync(ticket1, ticket2);
+
+            await context.Tickets.AddRangeAsync(ticket1, ticket2, ticket3);
             await context.SaveChangesAsync();
 
             Console.WriteLine("Tickets created");
@@ -266,6 +286,78 @@ namespace FlightsDb
                     $"{ticket.Passenger.FirstName} {ticket.Passenger.LastName}\n" +
                     $"Trip date: {ticket.Trip.Time.ToString()}");
             }
+        }
+
+        public static async Task TicketsPriceSumByAirport(FlightsDbContext context)
+        {
+            var airports = await context.Airports.ToListAsync();
+            for(int i = 0; i < airports.Count(); i++)
+            {
+                Console.WriteLine($"{i} - {airports[i].Title}");
+            }
+            Console.WriteLine("\nSelect the airport to see data about trips");
+            int input = int.Parse(Console.ReadLine());
+            var airportId = airports[input].Id;
+
+            DateTime firstDate = DateTime.Parse(Console.ReadLine());
+            DateTime secondDate = DateTime.Parse(Console.ReadLine());
+            
+            var trips = await context.Trips
+                .Include(t => t.DepartureAirport)
+                .Include(t => t.ArrivalAirport)
+                .Where(t => t.ArrivalAirportId == airportId ||
+                              t.DepartureAirportId == airportId)
+                .ToListAsync();
+
+            var airportSum = await context.Tickets
+                .Where(ticket => DateTime.Compare(ticket.Trip.Time, firstDate) >= 0 &&
+                                 DateTime.Compare(ticket.Trip.Time, secondDate) <= 0 &&
+                                 (ticket.Trip.ArrivalAirportId == airportId ||
+                                     ticket.Trip.DepartureAirportId == airportId))
+                .SumAsync(t => t.Price) / 2;
+
+            Console.WriteLine($"Tickets sum price: {airportSum}");
+        }
+
+        public static async Task SelectCheapAndExpensiveAirports(FlightsDbContext context)
+        {
+            var allTickets = context.Airports
+                .SelectMany(a => a.DepartureTrips
+                    .SelectMany(t => t.Tickets))
+                .GroupBy(t => t.Trip.DepartureAirport)
+                .Select(g => new
+                {
+                    Airport = g.Key,
+                    TicketsAvgPrice = g.Average(t => t.Price)
+                });
+
+            var minPrices = await allTickets
+                .Select(g => g.TicketsAvgPrice)
+                .MinAsync();
+            var minAirport = await allTickets
+                .FirstOrDefaultAsync(g => g.TicketsAvgPrice == minPrices);
+
+            var maxPrices = await allTickets
+                .Select(g => g.TicketsAvgPrice)
+                .MaxAsync();
+            var maxAirport = await allTickets
+                .FirstOrDefaultAsync(g => g.TicketsAvgPrice == maxPrices);
+
+            Console.WriteLine($"Airport with minimal prices: {minAirport?.Airport?.Title}\n" +
+                $"Airport with maximum prices: {maxAirport?.Airport?.Title}\n");
+        }
+
+        public static async Task SelectCheapAndExpensiveAirportsFromSql(FlightsDbContext context)
+        {
+
+            var min = await context.GetMinPricesAirport()
+                                   .FirstOrDefaultAsync();       
+
+            var max = await context.GetMaxPricesAirport()
+                                   .FirstOrDefaultAsync();
+
+            Console.WriteLine($"Airport with minimal prices: {min?.Title}\n" +
+                $"Airport with maximum prices: {max?.Title}\n");
         }
 
     }
