@@ -31,6 +31,14 @@ namespace FlightsDb
                 BirthDate = new DateTime(2000, 3, 10),
                 PassportNumber = "6002"
             };
+            Beneficiary beneficiary = new Beneficiary()
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Bobby",
+                LastName = "Ross",
+                BirthDate = new DateTime(1980, 2, 12),
+                PassportNumber = "7018"
+            };
 
             Airport airport1 = new Airport()
             {
@@ -102,6 +110,8 @@ namespace FlightsDb
             //context.Database.EnsureCreated();
 
             await context.Passengers.AddRangeAsync(passenger1, passenger2, passenger3);
+            await context.Beneficiaries.AddAsync(beneficiary);
+
             await context.SaveChangesAsync();
 
             Console.WriteLine("Passengers created");
@@ -121,11 +131,13 @@ namespace FlightsDb
 
             Console.WriteLine("Tickets created");
         }
-        public static void LoadTripsFromAirports(FlightsDbContext context)
+
+        public static async Task LoadTripsFromAirports(FlightsDbContext context)
         {
-            var airports = context.Airports.Include(a => a.ArrivalTrips)
-                                           .Include(a => a.DepartureTrips)
-                                           .ToList();
+            var airports = await context.Airports
+                .Include(a => a.ArrivalTrips)
+                .Include(a => a.DepartureTrips)
+                .ToListAsync();
 
             foreach (var a in airports)
             {
@@ -144,15 +156,16 @@ namespace FlightsDb
             }
         }
 
-        public static void LoadAllDataFromPassengers(FlightsDbContext context)
+        public static async Task LoadAllDataFromPassengers(FlightsDbContext context)
         {
-            var passengers = context.Passengers.Include(p => p.Tickets)
-                                                    .ThenInclude(ticket => ticket.Trip)
-                                                        .ThenInclude(trip => trip.ArrivalAirport)
-                                               .Include(p => p.Tickets)
-                                                    .ThenInclude(ticket => ticket.Trip)
-                                                        .ThenInclude(trip => trip.DepartureAirport)
-                                               .ToList();
+            var passengers = await context.Passengers
+                .Include(p => p.Tickets)
+                    .ThenInclude(ticket => ticket.Trip)
+                        .ThenInclude(trip => trip.ArrivalAirport)
+                .Include(p => p.Tickets)
+                    .ThenInclude(ticket => ticket.Trip)
+                        .ThenInclude(trip => trip.DepartureAirport)
+                .ToListAsync();
 
             foreach (var p in passengers)
             {
@@ -167,15 +180,16 @@ namespace FlightsDb
             }
         }
 
-        public static void LoadAllDataFromAirports(FlightsDbContext context)
+        public static async Task LoadAllDataFromAirports(FlightsDbContext context)
         {
-            var airports = context.Airports.Include(a => a.ArrivalTrips)
-                                               .ThenInclude(trip => trip.Tickets)
-                                                   .ThenInclude(ticket => ticket.Passenger)
-                                           .Include(a => a.DepartureTrips)
-                                               .ThenInclude(trip => trip.Tickets)
-                                                   .ThenInclude(ticket => ticket.Passenger)
-                                           .ToList();
+            var airports = await context.Airports
+                .Include(a => a.ArrivalTrips)
+                    .ThenInclude(trip => trip.Tickets)
+                        .ThenInclude(ticket => ticket.Passenger)
+                .Include(a => a.DepartureTrips)
+                    .ThenInclude(trip => trip.Tickets)
+                        .ThenInclude(ticket => ticket.Passenger)
+                .ToListAsync();
 
             foreach (var a in airports)
             {
@@ -207,5 +221,52 @@ namespace FlightsDb
                 Console.WriteLine();
             }
         }
+        
+        public static async Task SelectTripsByAirport(FlightsDbContext context)
+        {
+            var airports = await context.Airports.ToListAsync();
+            for(int i = 0; i < airports.Count(); i++)
+            {
+                Console.WriteLine($"{i} - {airports[i].Title}");
+            }
+            Console.WriteLine("\nSelect the airport to see data about trips");
+            int input = int.Parse(Console.ReadLine());
+            var airportId = airports[input].Id;
+
+            var trips = await context.Trips
+                .Include(t => t.DepartureAirport)
+                .Include(t => t.ArrivalAirport)
+                .Where(t => t.ArrivalAirportId == airportId ||
+                              t.DepartureAirportId == airportId)
+                .ToListAsync();
+
+            foreach (var t in trips)
+            {
+                Console.WriteLine($"\nTrip num: {t.Number}\n" +
+                    $"Arrival airport: {t.ArrivalAirport.Title}\n" +
+                    $"Departure airport: {t.DepartureAirport.Title}\n");
+            }
+        }
+
+        public static async Task SelectTicketsByDate(FlightsDbContext context)
+        {
+            DateTime firstDate = DateTime.Parse(Console.ReadLine());
+            DateTime secondDate = DateTime.Parse(Console.ReadLine());
+
+            var tickets = await context.Tickets
+                .Include(t => t.Passenger)
+                .Include(t => t.Trip)
+                .Where(ticket => DateTime.Compare(ticket.Trip.Time, firstDate) >= 0 &&
+                                 DateTime.Compare(ticket.Trip.Time, secondDate) <=0)
+                .ToListAsync();
+
+            foreach (var ticket in tickets)
+            {
+                Console.WriteLine("\nTicket owner: " +
+                    $"{ticket.Passenger.FirstName} {ticket.Passenger.LastName}\n" +
+                    $"Trip date: {ticket.Trip.Time.ToString()}");
+            }
+        }
+
     }
 }

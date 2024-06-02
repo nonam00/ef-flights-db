@@ -1,10 +1,9 @@
 ﻿using FlightsDb;
 using FlightsDb.Models;
-
-
+using Microsoft.EntityFrameworkCore;
 
 using (FlightsDbContext context = new FlightsDbContext())
 {
-    Examples.LoadAllDataFromAirports(context);
+    await Examples.SelectTripsByAirport(context);
+    //await Examples.SelectTicketsByDate(context);
 }
-Console.WriteLine();

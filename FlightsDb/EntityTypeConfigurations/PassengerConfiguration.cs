@@ -18,6 +18,8 @@ namespace FlightsDb.EntityTypeConfigurations
 
             builder.Property(p => p.LastName)
                    .HasMaxLength(100);
+            
+            builder.UseTphMappingStrategy();
 
             builder.ToTable(t => 
             {

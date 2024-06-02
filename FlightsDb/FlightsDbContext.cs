@@ -12,7 +12,8 @@ namespace FlightsDb
         public DbSet<Airport> Airports { get; set; }
         public DbSet<Trip> Trips { get; set; } 
         public DbSet<Ticket> Tickets { get; set; }
-        
+        public DbSet<Beneficiary> Beneficiaries { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             var configuration = new ConfigurationBuilder()
@@ -32,7 +33,8 @@ namespace FlightsDb
             builder.ApplyConfiguration(new AirportConfiguration());
             builder.ApplyConfiguration(new TripConfiguration());
             builder.ApplyConfiguration(new TicketConfiguration());
-            
+            builder.ApplyConfiguration(new BeneficiaryConfiguration());
+
             base.OnModelCreating(builder);
         }
     }

@@ -13,6 +13,9 @@ namespace FlightsDb.EntityTypeConfigurations
 
             builder.HasAlternateKey(t => t.Number);
 
+            builder.Property(t => t.Type)
+                   .HasDefaultValue(TicketType.Economy);    
+
             builder.HasOne(t => t.Passenger)
                    .WithMany(p => p.Tickets)
                    .HasForeignKey(t => t.PassengerId)
