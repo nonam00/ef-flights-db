@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
 using FlightsDb.EntityTypeConfigurations;
 using FlightsDb.Models;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using System.Reflection.Emit;
+using FlightsDb.Models.DbModels;
 
 namespace FlightsDb
 {
@@ -14,12 +14,21 @@ namespace FlightsDb
         public DbSet<Airport> Airports { get; set; }
         public DbSet<Trip> Trips { get; set; } 
         public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<Beneficiary> Beneficiaries { get; set; } 
-        
+        public DbSet<Beneficiary> Beneficiaries { get; set; }
+
+        public DbSet<TicketFullInfo> TicketsFullInfo { get; set; }
+        public DbSet<TripFullInfo> TripsFullInfo { get; set; }
+
         public IQueryable<Airport> GetMaxPricesAirport() =>
             FromExpression(() => GetMaxPricesAirport());
         public IQueryable<Airport> GetMinPricesAirport() =>
             FromExpression(() => GetMinPricesAirport());
+
+        public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder.AddFilter((category, level) => level == LogLevel.Information)
+                   .AddProvider(new MyLoggerProvider());
+        });
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
@@ -30,7 +39,7 @@ namespace FlightsDb
 
             string? connectionString = configuration.GetConnectionString("DefaultConnection");
             options.UseSqlServer(connectionString);
-                   //.LogTo(Console.WriteLine, LogLevel.Information);
+            options.UseLoggerFactory(loggerFactory);
 
             base.OnConfiguring(options);
         }
@@ -45,6 +54,18 @@ namespace FlightsDb
 
             builder.HasDbFunction(() => GetMaxPricesAirport());
             builder.HasDbFunction(() => GetMinPricesAirport());
+
+            builder.Entity<TicketFullInfo>(t =>
+            {
+                t.HasNoKey();
+                t.ToView("vw_ticket_full_info");
+            });
+
+            builder.Entity<TripFullInfo>(t =>
+            {
+                t.HasNoKey();
+                t.ToView("vw_trip_full_info");
+            });
 
             base.OnModelCreating(builder);
         }
