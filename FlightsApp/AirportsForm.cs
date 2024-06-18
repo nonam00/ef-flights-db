@@ -86,7 +86,8 @@ namespace FlightsApp
                     await context.SaveChangesAsync();
                     listAirports.DataSource = await context.Airports.ToListAsync();
                 }
-                else if (listAirports.SelectedItem is not null &&
+                else if (!isAdd &&
+                    listAirports.SelectedItem is not null &&
                     listAirports.SelectedValue != null &&
                     textBoxTitle.Text.Trim() != String.Empty &&
                     textBoxCountry.Text.Trim() != String.Empty &&

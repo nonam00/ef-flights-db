@@ -12,4 +12,10 @@
     <ProjectReference Include="..\FlightsDb\FlightsDb.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="PassengersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

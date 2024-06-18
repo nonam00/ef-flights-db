@@ -9,5 +9,8 @@
         public string PassportNumber { get; set; } = null!;
         
         public virtual IList<Ticket> Tickets { get; set; } = new List<Ticket>();
+
+        // For winforms display element
+        public string Display => $"{FirstName} {LastName}";
     }
 }

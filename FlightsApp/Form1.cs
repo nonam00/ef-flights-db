@@ -9,7 +9,8 @@ namespace FlightsApp
 
         private void buttonPassengers_Click(object sender, EventArgs e)
         {
-
+            PassengersForm passengersForm = new PassengersForm();
+            passengersForm.ShowDialog();
         }
 
         private void buttonAirports_Click(object sender, EventArgs e)
