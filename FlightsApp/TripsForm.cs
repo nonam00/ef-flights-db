@@ -100,6 +100,7 @@ namespace FlightsApp
 
                     var trip = new Trip
                     {
+                        Id = Guid.NewGuid(),
                         Number = textBoxNumber.Text.Trim(),
                         Time = time,
                         SeatsNumber= seatsNumber,
