@@ -21,7 +21,8 @@ namespace FlightsApp
 
         private void buttonTrips_Click(object sender, EventArgs e)
         {
-
+            TripsForm tripsForm = new TripsForm();
+            tripsForm.ShowDialog();
         }
 
         private void buttonTickets_Click(object sender, EventArgs e)

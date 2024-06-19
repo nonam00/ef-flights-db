@@ -1,6 +1,6 @@
 ﻿namespace FlightsApp
 {
-    partial class PassengersForm
+    partial class TripsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,26 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            listPassengers = new ListBox();
+            listTrips = new ListBox();
             buttonAdd = new Button();
-            textBoxFirstName = new TextBox();
-            textBoxLastName = new TextBox();
-            textBoxBirthDate = new TextBox();
+            textBoxNumber = new TextBox();
+            textBoxSeatsNumber = new TextBox();
+            textBoxTime = new TextBox();
             buttonEdit = new Button();
             buttonDelete = new Button();
             buttonSave = new Button();
             buttonCancel = new Button();
-            textBoxPassportNumber = new TextBox();
+            textBoxDepartureAirport = new TextBox();
+            textBoxArrivalAirport = new TextBox();
             SuspendLayout();
             // 
-            // listPassengers
+            // listTrips
             // 
-            listPassengers.FormattingEnabled = true;
-            listPassengers.ItemHeight = 15;
-            listPassengers.Location = new Point(12, 41);
-            listPassengers.Name = "listPassengers";
-            listPassengers.Size = new Size(291, 259);
-            listPassengers.TabIndex = 0;
+            listTrips.FormattingEnabled = true;
+            listTrips.ItemHeight = 15;
+            listTrips.Location = new Point(12, 41);
+            listTrips.Name = "listTrips";
+            listTrips.Size = new Size(291, 259);
+            listTrips.TabIndex = 0;
             // 
             // buttonAdd
             // 
@@ -60,32 +61,32 @@
             buttonAdd.UseVisualStyleBackColor = true;
             buttonAdd.Click += buttonAdd_Click;
             // 
-            // textBoxFirstName
+            // textBoxNumber
             // 
-            textBoxFirstName.Font = new Font("Segoe UI", 15F);
-            textBoxFirstName.Location = new Point(408, 41);
-            textBoxFirstName.Name = "textBoxFirstName";
-            textBoxFirstName.PlaceholderText = "First Name";
-            textBoxFirstName.Size = new Size(224, 34);
-            textBoxFirstName.TabIndex = 2;
+            textBoxNumber.Font = new Font("Segoe UI", 15F);
+            textBoxNumber.Location = new Point(408, 41);
+            textBoxNumber.Name = "textBoxNumber";
+            textBoxNumber.PlaceholderText = "Number";
+            textBoxNumber.Size = new Size(224, 34);
+            textBoxNumber.TabIndex = 2;
             // 
-            // textBoxLastName
+            // textBoxSeatsNumber
             // 
-            textBoxLastName.Font = new Font("Segoe UI", 15F);
-            textBoxLastName.Location = new Point(408, 93);
-            textBoxLastName.Name = "textBoxLastName";
-            textBoxLastName.PlaceholderText = "Last Name";
-            textBoxLastName.Size = new Size(224, 34);
-            textBoxLastName.TabIndex = 3;
+            textBoxSeatsNumber.Font = new Font("Segoe UI", 15F);
+            textBoxSeatsNumber.Location = new Point(408, 146);
+            textBoxSeatsNumber.Name = "textBoxSeatsNumber";
+            textBoxSeatsNumber.PlaceholderText = "Seats Number";
+            textBoxSeatsNumber.Size = new Size(224, 34);
+            textBoxSeatsNumber.TabIndex = 3;
             // 
-            // textBoxBirthDate
+            // textBoxTime
             // 
-            textBoxBirthDate.Font = new Font("Segoe UI", 15F);
-            textBoxBirthDate.Location = new Point(408, 143);
-            textBoxBirthDate.Name = "textBoxBirthDate";
-            textBoxBirthDate.PlaceholderText = "Birth Date (dd.mm.yyyy)";
-            textBoxBirthDate.Size = new Size(224, 34);
-            textBoxBirthDate.TabIndex = 4;
+            textBoxTime.Font = new Font("Segoe UI", 15F);
+            textBoxTime.Location = new Point(408, 93);
+            textBoxTime.Name = "textBoxTime";
+            textBoxTime.PlaceholderText = "Time";
+            textBoxTime.Size = new Size(224, 34);
+            textBoxTime.TabIndex = 4;
             // 
             // buttonEdit
             // 
@@ -112,7 +113,7 @@
             // buttonSave
             // 
             buttonSave.Font = new Font("Segoe UI", 15F);
-            buttonSave.Location = new Point(408, 260);
+            buttonSave.Location = new Point(408, 334);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(85, 40);
             buttonSave.TabIndex = 7;
@@ -123,7 +124,7 @@
             // buttonCancel
             // 
             buttonCancel.Font = new Font("Segoe UI", 15F);
-            buttonCancel.Location = new Point(531, 260);
+            buttonCancel.Location = new Point(546, 334);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(86, 40);
             buttonCancel.TabIndex = 8;
@@ -131,32 +132,42 @@
             buttonCancel.UseVisualStyleBackColor = true;
             buttonCancel.Click += buttonCancel_Click;
             // 
-            // textBoxPassportNumber
+            // textBoxDepartureAirport
             // 
-            textBoxPassportNumber.Font = new Font("Segoe UI", 15F);
-            textBoxPassportNumber.Location = new Point(408, 197);
-            textBoxPassportNumber.Name = "textBoxPassportNumber";
-            textBoxPassportNumber.PlaceholderText = "Passport Number";
-            textBoxPassportNumber.Size = new Size(224, 34);
-            textBoxPassportNumber.TabIndex = 9;
+            textBoxDepartureAirport.Font = new Font("Segoe UI", 15F);
+            textBoxDepartureAirport.Location = new Point(408, 197);
+            textBoxDepartureAirport.Name = "textBoxDepartureAirport";
+            textBoxDepartureAirport.PlaceholderText = "Departure Airport Id";
+            textBoxDepartureAirport.Size = new Size(224, 34);
+            textBoxDepartureAirport.TabIndex = 9;
             // 
-            // PassengersForm
+            // textBoxArrivalAirport
+            // 
+            textBoxArrivalAirport.Font = new Font("Segoe UI", 15F);
+            textBoxArrivalAirport.Location = new Point(408, 252);
+            textBoxArrivalAirport.Name = "textBoxArrivalAirport";
+            textBoxArrivalAirport.PlaceholderText = "Arrival Airport Id";
+            textBoxArrivalAirport.Size = new Size(224, 34);
+            textBoxArrivalAirport.TabIndex = 10;
+            // 
+            // TripsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(textBoxPassportNumber);
+            Controls.Add(textBoxArrivalAirport);
+            Controls.Add(textBoxDepartureAirport);
             Controls.Add(buttonCancel);
             Controls.Add(buttonSave);
             Controls.Add(buttonDelete);
             Controls.Add(buttonEdit);
-            Controls.Add(textBoxBirthDate);
-            Controls.Add(textBoxLastName);
-            Controls.Add(textBoxFirstName);
+            Controls.Add(textBoxTime);
+            Controls.Add(textBoxSeatsNumber);
+            Controls.Add(textBoxNumber);
             Controls.Add(buttonAdd);
-            Controls.Add(listPassengers);
-            Name = "PassengersForm";
-            Text = "Passengers Form";
+            Controls.Add(listTrips);
+            Name = "TripsForm";
+            Text = "Trips Form";
             Load += PassengerForm_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -164,15 +175,16 @@
 
         #endregion
 
-        private ListBox listPassengers;
+        private ListBox listTrips;
         private Button buttonAdd;
-        private TextBox textBoxFirstName;
-        private TextBox textBoxLastName;
-        private TextBox textBoxBirthDate;
+        private TextBox textBoxNumber;
+        private TextBox textBoxSeatsNumber;
+        private TextBox textBoxTime;
         private Button buttonEdit;
         private Button buttonDelete;
         private Button buttonSave;
         private Button buttonCancel;
-        private TextBox textBoxPassportNumber;
+        private TextBox textBoxDepartureAirport;
+        private TextBox textBoxArrivalAirport;
     }
 }
